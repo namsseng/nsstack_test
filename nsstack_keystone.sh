@@ -90,9 +90,9 @@ admin_token=$token
 
 # onready allows you to send a notification when the process
 # is ready to serve For example, to have it notify using
-# systemd, one could set shell command: "onready = systemd-
-# notify --ready" or a module with notify() method: "onready =
-# keystone.common.systemd". (string value)
+# systemd, one could set shell command: \"onready = systemd-
+# notify --ready\" or a module with notify() method: \"onready =
+# keystone.common.systemd\". (string value)
 #onready=<None>
 
 # enforced by optional sizelimit middleware
@@ -421,11 +421,11 @@ admin_token=$token
 
 # Format string to use for log messages with context (string
 # value)
-#logging_context_format_string=%(asctime)s.%(msecs)03d %(process)d %(levelname)s                              %(name)s [%(request_id)s %(user_identity)s] %(instance)s%(message)s
+#logging_context_format_string=%(asctime)s.%(msecs)03d %(process)d %(levelname)s%(name)s [%(request_id)s %(user_identity)s] %(instance)s%(message)s
 
 # Format string to use for log messages without context
 # (string value)
-#logging_default_format_string=%(asctime)s.%(msecs)03d %(process)d %(levelname)s                              %(name)s [-] %(instance)s%(message)s
+#logging_default_format_string=%(asctime)s.%(msecs)03d %(process)d %(levelname)s%(name)s [-] %(instance)s%(message)s
 
 # Data to append to log format when level is DEBUG (string
 # value)
@@ -433,10 +433,10 @@ admin_token=$token
 
 # Prefix each line of exception output with this format
 # (string value)
-#logging_exception_prefix=%(asctime)s.%(msecs)03d %(process)d TRACE %(name)s %(i                             nstance)s
+#logging_exception_prefix=%(asctime)s.%(msecs)03d %(process)d TRACE %(name)s %(instance)s
 
 # List of logger=LEVEL pairs (list value)
-#default_log_levels=amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,s                             uds=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN
+#default_log_levels=amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN
 
 # Publish error events (boolean value)
 #publish_errors=false
@@ -1372,6 +1372,8 @@ connection = mysql://keystone:$password@$managementip/keystone
 Distribution = Ubuntu
 
 " > /etc/keystone/keystone.conf
+
+
 # By default, the Ubuntu packages create a SQLite database
 rm /var/lib/keystone/keystone.db
 
