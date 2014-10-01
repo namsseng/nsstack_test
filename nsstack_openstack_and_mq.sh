@@ -7,7 +7,6 @@ if [ "$(id -u)" != "0" ]; then
 fi
 . ./nsstack_setuprc
 
-service_pass=$SG_SERVICE_PASSWORD
 # Install the Ubuntu Cloud Archive for Icehouse: 
 apt-get install python-software-properties
 add-apt-repository cloud-archive:icehouse

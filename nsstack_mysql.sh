@@ -9,8 +9,8 @@ fi
 # now let's install MySQL
 apt-get install -y python-mysqldb mysql-server
 
-service_ip=$SG_SERVICE_IP
-service_pass=$SG_SERVICE_PASSWORD
+service_ip=$OS_SERVICE_IP
+service_pass=$OS_SERVICE_PASSWORD
 echo;
 echo "##############################################################################################"
 echo;

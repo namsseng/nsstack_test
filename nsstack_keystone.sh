@@ -11,11 +11,11 @@ fi
 apt-get install keystone -y
 
 # some vars from the SG setup file getting locally reassigned 
-password=$SG_SERVICE_PASSWORD
-email=$SG_SERVICE_EMAIL
-token=$SG_SERVICE_TOKEN
-region=$SG_SERVICE_REGION
-managementip=$SG_SERVICE_IP
+password=$OS_SERVICE_PASSWORD
+email=$OS_SERVICE_EMAIL
+token=$OS_SERVICE_TOKEN
+region=$OS_SERVICE_REGION
+managementip=$OS_SERVICE_IP
 
 
 
@@ -1383,8 +1383,6 @@ su -s /bin/sh -c "keystone-manage db_sync" keystone
 service keystone restart
 
 sleep 5
-export OS_SERVICE_TOKEN=$token
-export OS_SERVICE_ENDPOINT=http://$managementip:35357/v2.0
 
 (crontab -l -u keystone 2>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
 
@@ -1417,8 +1415,8 @@ EOF
 # guess. consider me disgruntled. Kord 
 
 # Users
-keystone user-create --name=admin --pass=$password --email=$email
-keystone user-create --name=demo --pass=$password --email=$email
+keystone user-create --name=admin --pass="$password" --email="$email"
+keystone user-create --name=demo --pass="$password" --email="$email"
 
 # Roles
 keystone role-create --name=admin
@@ -1434,27 +1432,27 @@ keystone user-role-add --user=demo --role=_member_ --tenant=demo
 
 # keystone 
 keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
-keystone endpoint-create --service-id=\$(keystone service-list | awk '/ identity / {print \$2}') --publicurl=http://$mangementip:5000/v2.0 --internalurl=http://$mangementip:5000/v2.0 --adminurl=http://$mangementip:35357/v2.0
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl=http://"$mangementip":5000/v2.0 --internalurl=http://"$mangementip":5000/v2.0 --adminurl=http://"$mangementip":35357/v2.0
 
 
 # glance
-keystone user-create --name=glance --pass=$password --email=$email
+keystone user-create --name=glance --pass="$password" --email="$email"
 keystone user-role-add --user=glance --tenant=service --role=admin
 keystone service-create --name=glance --type=image --description="OpenStack Image Service"
-keystone endpoint-create --service-id=\$(keystone service-list | awk '/ image / {print \$2}') --publicurl=http://$mangementip:9292 --internalurl=http://$mangementip:9292 --adminurl=http://$mangementip:9292
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ image / {print $2}') --publicurl=http://"$mangementip":9292 --internalurl=http://"$mangementip":9292 --adminurl=http://"$mangementip":9292
 
 
 # nova
-keystone user-create --name=nova --pass=$password --email=$email
+keystone user-create --name=nova --pass="$password" --email="$email"
 keystone user-role-add --tenant=service --user=nova --role=admin
 keystone service-create --name=nova --type=compute --description="OpenStack Compute"
-keystone endpoint-create --service-id=\$(keystone service-list | awk '/ compute / {print \$2}') --publicurl=http://$mangementip:8774/v2/%\(tenant_id\)s --internalurl=http://$mangementip:8774/v2/%\(tenant_id\)s --adminurl=http://$mangementip:8774/v2/%\(tenant_id\)s
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl=http://"$mangementip":8774/v2/%\(tenant_id\)s --internalurl=http://"$mangementip":8774/v2/%\(tenant_id\)s --adminurl=http://"$mangementip":8774/v2/%\(tenant_id\)s
 
 # neutron
-keystone user-create --name=neutron --pass=$password --email=$email
+keystone user-create --name=neutron --pass="$password" --email="$email"
 keystone user-role-add --tenant=service --user=neutron --role=admin
 keystone service-create --name neutron --type network --description "OpenStack Networking"
-keystone endpoint-create --service-id \$(keystone service-list | awk '/ network / {print \$2}') --publicurl http://$mangementip:9696 --adminurl http://$mangementip:9696 --internalurl http://$mangementip:9696
+keystone endpoint-create --service-id $(keystone service-list | awk '/ network / {print $2}') --publicurl http://"$mangementip":9696 --adminurl http://"$mangementip":9696 --internalurl http://"$mangementip":9696
 
 # cinder
 #keystone user-create --name=cinder --pass="$SERVICE_PASSWORD" --email=$email

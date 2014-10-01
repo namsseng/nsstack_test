@@ -7,9 +7,9 @@ if [ "$(id -u)" != "0" ]; then
 fi
 . ./nsstack_setuprc
 
-password=$SG_SERVICE_PASSWORD    
-managementip=$SG_SERVICE_IP
-rignic=$SG_SERVICE_NIC
+password=$OS_SERVICE_PASSWORD    
+managementip=$OS_SERVICE_IP
+rignic=$OS_SERVICE_NIC
 
 # install packages
 apt-get install -y nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient

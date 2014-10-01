@@ -6,16 +6,16 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 ./nsstack_setuprc
-password=$SG_SERVICE_PASSWORD    
-managementip=$SG_SERVICE_IP
-rignic=$SG_SERVICE_NIC
-ext_start=$SG_EXTERNAL_START
-ext_end=$SG_EXTERNAL_END
-ext_gateway=$SG_EXTERNAL_GATEWAY
-ext_area=$SG_EXTERNAL_AREA
-ext_dns=$SG_EXTERNAL_DNS
-int_gateway=$SG_INTERNAL_GATEWAY
-int_area=SG_INTERNAL_AREA
+password=$OS_SERVICE_PASSWORD    
+managementip=$OS_SERVICE_IP
+rignic=$OS_SERVICE_NIC
+ext_start=$OS_EXTERNAL_START
+ext_end=$OS_EXTERNAL_END
+ext_gateway=$OS_EXTERNAL_GATEWAY
+ext_area=$OS_EXTERNAL_AREA
+ext_dns=$OS_EXTERNAL_DNS
+int_gateway=$OS_INTERNAL_GATEWAY
+int_area=OS_INTERNAL_AREA
 
 apt-get install neutron-server neutron-common neutron-plugin-ml2 neutron-plugin-openvswitch-agent openvswitch-datapath-dkms neutron-l3-agent neutron-dhcp-agent
 
