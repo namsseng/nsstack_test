@@ -20,12 +20,12 @@ managementip=$SG_SERVICE_IP
 
 
 # edit keystone conf file to use templates and mysql
-if [ -f /etc/keystone/keystone.conf.orig ]; then
-  echo "Original backup of keystone.conf file exists. Your current config will be modified by this script."
-  cp /etc/keystone/keystone.conf.orig /etc/keystone/keystone.conf
-else
-  cp /etc/keystone/keystone.conf /etc/keystone/keystone.conf.orig
-fi
+#if [ -f /etc/keystone/keystone.conf.orig ]; then
+#  echo "Original backup of keystone.conf file exists. Your current config will be modified by this script."
+#  cp /etc/keystone/keystone.conf.orig /etc/keystone/keystone.conf
+#else
+#  cp /etc/keystone/keystone.conf /etc/keystone/keystone.conf.orig
+#fi
 
 
 
@@ -387,6 +387,7 @@ admin_token=$token
 # tcp port number; <port> results in listening on the
 # specified port number (and not enabling backdoor if that
 # port is in use); and <start>:<end> results in listening on
+
 # the smallest unused port number within the specified range
 # of port numbers.  The chosen port is displayed in the
 # service's log file. (string value)
