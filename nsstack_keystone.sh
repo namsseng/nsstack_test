@@ -1371,7 +1371,6 @@ connection = mysql://keystone:$password@$managementip/keystone
 
 [extra_headers]
 Distribution = Ubuntu
-
 " > /etc/keystone/keystone.conf
 
 
@@ -1395,25 +1394,20 @@ cat > admin_openrc.sh <<EOF
 export OS_TENANT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=$password
-export OS_AUTH_URL="http://$managementip:35357/v2.0/"
+export OS_AUTH_URL=http://$managementip:35357/v2.0
 EOF
 
 cat > demo_openrc.sh <<EOF
 export OS_TENANT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=$password
-export OS_AUTH_URL="http://$managementip:35357/v2.0/"
+export OS_AUTH_URL=http://$managementip:35357/v2.0
 EOF
 
 # source admin_openrc.sh
 
 # The following portions of this script were inspired by works by Hastexo and the OpenStack wiki scripts.
 # Where possible, I've clarified or cleaned up logic flow to 'group' linear commands to each other.
-
-function get_id () {
-    echo `$@ | awk '/ id / { print $4 }'`
-}
-
 
 
 # the following commands use an interesting pattern due to keystone's asinine way of doing asset association.
@@ -1423,53 +1417,56 @@ function get_id () {
 # guess. consider me disgruntled. Kord 
 
 # Users
-keystone user-create --name=admin --pass="$ADMIN_PASSWORD" --email=$email
-keystone user-create --name=demo --pass="$ADMIN_PASSWORD" --email=$email
+keystone user-create --name=admin --pass=$password --email=$email
+keystone user-create --name=demo --pass=$password --email=$email
 
 # Roles
-ADMIN_ROLE=$(get_id keystone role-create --name=admin)
+keystone role-create --name=admin
 
 # Tenants
-ADMIN_TENANT=$(get_id keystone tenant-create --name=admin --description="Admin Tenant")
-SERVICE_TENANT=$(get_id keystone tenant-create --name=service --description="Service Tenant")
-DEMO_TENANT=$(get_id keystone tenant-create --name=demo --description="Demo Tenant")
+keystone tenant-create --name=admin --description="Admin Tenant"
+keystone tenant-create --name=service --description="Service Tenant"
+keystone tenant-create --name=demo --description="Demo Tenant"
 
 # Add Roles to Users in Tenants
 keystone user-role-add --user=admin --role=admin --tenant=admin
 keystone user-role-add --user=demo --role=_member_ --tenant=demo
 
 # keystone 
-KEYSTONE=$(get_id keystone service-create --name=keystone --type=identity --description="OpenStack Identity" )
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$KEYSTONE --publicurl='http://'"$managementip"':5000/v2.0' --adminurl='http://'"$managementip"':35357/v2.0' --internalurl='http://'"$managementip"':5000/v2.0'
+keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl=http://$mangementip:5000/v2.0 --internalurl=http://$mangementip:5000/v2.0 --adminurl=http://$mangementip:35357/v2.0
+
 
 # glance
-keystone user-create --name=glance --pass="$SERVICE_PASSWORD" --email=$email
+keystone user-create --name=glance --pass=$password --email=$email
 keystone user-role-add --user=glance --tenant=service --role=admin
-GLANCE=$(get_id keystone service-create --name=glance --type=image --description=Image)
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$GLANCE --publicurl='http://'"$managementip"':9292' --adminurl='http://'"$managementip"':9292' --internalurl='http://'"$managementip"':9292'
+keystone service-create --name=glance --type=image --description="OpenStack Image Service"
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ image / {print $2}') --publicurl=http://$mangementip:9292 --internalurl=http://$mangementip:9292 --adminurl=http://$mangementip:9292
 
-# cinder
-keystone user-create --name=cinder --pass="$SERVICE_PASSWORD" --email=$email
-keystone user-role-add --tenant=service --user=cinder --role=admin
-CINDER=$(get_id keystone service-create --name=cinder --type=volume --description=Volume )
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$CINDER --publicurl='http://'"$managementip"':8776/v1/$(tenant_id)s' --adminurl='http://'"$managementip"':8776/v1/$(tenant_id)s' --internalurl='http://'"$managementip"':8776/v1/$(tenant_id)s'
-CINDER2=$(get_id keystone service-create --name=cinder --type=volumev2 --description=Volume2 )
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$CINDER2 --publicurl='http://'"$managementip"':8776/v2/$(tenant_id)s' --adminurl='http://'"$managementip"':8776/v2/$(tenant_id)s' --internalurl='http://'"$managementip"':8776/v2/$(tenant_id)s'
 
 # nova
-keystone user-create --name=nova --pass="$SERVICE_PASSWORD" --email=$email
+keystone user-create --name=nova --pass=$password --email=$email
 keystone user-role-add --tenant=service --user=nova --role=admin
-NOVA=$(get_id keystone service-create --name=nova --type=compute --description=Compute )
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$NOVA --publicurl='http://'"$managementip"':8774/v2/$(tenant_id)s' --adminurl='http://'"$managementip"':8774/v2/$(tenant_id)s' --internalurl='http://'"$managementip"':8774/v2/$(tenant_id)s'
-
+keystone service-create --name=nova --type=compute --description="OpenStack Compute"
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl=http://$mangementip:8774/v2/%\(tenant_id\)s --internalurl=http://$mangementip:8774/v2/%\(tenant_id\)s --adminurl=http://$mangementip:8774/v2/%\(tenant_id\)s
 
 # neutron
-keystone user-create --name=neutron --pass="$SERVICE_PASSWORD" --email=$email
+keystone user-create --name=neutron --pass=$password --email=$email
 keystone user-role-add --tenant=service --user=neutron --role=admin
-NEUTRON=$(get_id keystone service-create --name=neutron --type=network --description=Compute )
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$NEUTRON --publicurl='http://'"$managementip"':9696' --adminurl='http://'"$managementip"':9696' --internalurl='http://'"$managementip"':9696'
+keystone service-create --name neutron --type network --description "OpenStack Networking"
+keystone endpoint-create --service-id $(keystone service-list | awk '/ network / {print $2}') --publicurl http://$mangementip:9696 --adminurl http://$mangementip:9696 --internalurl http://$mangementip:9696
+
+# cinder
+#keystone user-create --name=cinder --pass="$SERVICE_PASSWORD" --email=$email
+#keystone user-role-add --tenant=service --user=cinder --role=admin
+#CINDER=$(get_id keystone service-create --name=cinder --type=volume --description=Volume )
+#keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$CINDER --publicurl='http://'"$managementip"':8776/v1/$(tenant_id)s' --adminurl='http://'"$managementip"':8776/v1/$(tenant_id)s' --internalurl='http://'"$managementip"':8776/v1/$(tenant_id)s'
+#CINDER2=$(get_id keystone service-create --name=cinder --type=volumev2 --description=Volume2 )
+#keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$CINDER2 --publicurl='http://'"$managementip"':8776/v2/$(tenant_id)s' --adminurl='http://'"$managementip"':8776/v2/$(tenant_id)s' --internalurl='http://'"$managementip"':8776/v2/$(tenant_id)s'
+
+
 
 # ec2 compatability
-EC2=$(get_id keystone service-create --name=ec2 --type=ec2 --description=EC2 )
-keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$EC2 --publicurl='http://'"$managementip"':8773/services/Cloud' --adminurl='http://'"$managementip"':8773/services/Admin' --internalurl='http://'"$managementip"':8773/services/Cloud'
+#EC2=$(get_id keystone service-create --name=ec2 --type=ec2 --description=EC2 )
+#keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$EC2 --publicurl='http://'"$managementip"':8773/services/Cloud' --adminurl='http://'"$managementip"':8773/services/Admin' --internalurl='http://'"$managementip"':8773/services/Cloud'
 
