@@ -36,8 +36,8 @@ echo "
 # Options defined in keystone
 #
 
-# A "shared secret" that can be used to bootstrap Keystone.
-# This "token" does not represent a user, and carries no
+# A \"shared secret\" that can be used to bootstrap Keystone.
+# This \"token\" does not represent a user, and carries no
 # explicit authorization. To disable in production (highly
 # recommended), remove AdminTokenAuthMiddleware from your
 # paste application pipelines (for example, in keystone-
@@ -121,7 +121,7 @@ admin_token=$token
 # value)
 #member_role_name=_member_
 
-# The value passed as the keyword "rounds" to passlib encrypt
+# The value passed as the keyword \"rounds\" to passlib encrypt
 # method. (integer value)
 #crypt_strength=40000
 
@@ -293,7 +293,7 @@ admin_token=$token
 #rpc_zmq_ipc_dir=/var/run/openstack
 
 # Name of this node. Must be a valid hostname, FQDN, or IP
-# address. Must match "host" option, if running Nova. (string
+# address. Must match \"host\" option, if running Nova. (string
 # value)
 #rpc_zmq_host=keystone
 
@@ -446,11 +446,11 @@ admin_token=$token
 
 # If an instance is passed with the log message, format it
 # like this (string value)
-#instance_format="[instance: %(uuid)s] "
+#instance_format=\"[instance: %(uuid)s] \"
 
 # If an instance UUID is passed with the log message, format
 # it like this (string value)
-#instance_uuid_format="[instance: %(uuid)s] "
+#instance_uuid_format=\"[instance: %(uuid)s] \"
 
 # The name of logging configuration file. It does not disable
 # existing loggers, but just appends specified logging
@@ -583,7 +583,7 @@ log_dir=/var/log/keystone
 
 # Arguments supplied to the backend module. Specify this
 # option once per argument to be passed to the dogpile.cache
-# backend. Example format: "<argname>:<value>". (multi valued)
+# backend. Example format: \"<argname>:<value>\". (multi valued)
 #backend_argument=
 
 # Proxy Classes to import that will affect the way the
@@ -863,29 +863,29 @@ connection = mysql://keystone:$password@$managementip/keystone
 #suffix=cn=example,cn=com
 
 # If true, will add a dummy member to groups. This is required
-# if the objectclass for groups requires the "member"
+# if the objectclass for groups requires the \"member\"
 # attribute. (boolean value)
 #use_dumb_member=false
 
-# DN of the "dummy member" to use when "use_dumb_member" is
+# DN of the \"dummy member\" to use when \"use_dumb_member\" is
 # enabled. (string value)
 #dumb_member=cn=dumb,dc=nonexistent
 
 # allow deleting subtrees. (boolean value)
 #allow_subtree_delete=false
 
-# The LDAP scope for queries, this can be either "one"
-# (onelevel/singleLevel) or "sub" (subtree/wholeSubtree).
+# The LDAP scope for queries, this can be either \"one\"
+# (onelevel/singleLevel) or \"sub\" (subtree/wholeSubtree).
 # (string value)
 #query_scope=one
 
-# Maximum results per page; a value of zero ("0") disables
+# Maximum results per page; a value of zero (\"0\") disables
 # paging. (integer value)
 #page_size=0
 
 # The LDAP dereferencing option for queries. This can be
-# either "never", "searching", "always", "finding" or
-# "default". The "default" option falls back to using default
+# either \"never\", \"searching\", \"always\", \"finding\" or
+# \"default\". The "default" option falls back to using default
 # dereferencing configured by your ldap.conf. (string value)
 #alias_dereferencing=default
 
@@ -918,11 +918,11 @@ connection = mysql://keystone:$password@$managementip/keystone
 #user_enabled_attribute=enabled
 
 # Bitmask integer to indicate the bit that the enabled value
-# is stored in if the LDAP server represents "enabled" as a
-# bit on an integer rather than a boolean. A value of "0"
-# indicates the mask is not used. If this is not set to "0"
-# the typical value is "2". This is typically used when
-# "user_enabled_attribute = userAccountControl". (integer
+# is stored in if the LDAP server represents \"enabled\" as a
+# bit on an integer rather than a boolean. A value of \"0\"
+# indicates the mask is not used. If this is not set to \"0\"
+# the typical value is \"2\". This is typically used when
+# \"user_enabled_attribute = userAccountControl\". (integer
 # value)
 #user_enabled_mask=0
 
@@ -930,8 +930,8 @@ connection = mysql://keystone:$password@$managementip/keystone
 # appropriate int value if the LDAP server uses non-boolean
 # (bitmask) values to indicate if a user is enabled or
 # disabled. If this is not set to "True"the typical value is
-# "512". This is typically used when "user_enabled_attribute =
-# userAccountControl". (string value)
+# \"512\". This is typically used when \"user_enabled_attribute =
+# userAccountControl\". (string value)
 #user_enabled_default=True
 
 # List of attributes stripped off the user on update. (list
@@ -953,7 +953,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 
 # If True, Keystone uses an alternative method to determine if
 # a user is enabled or not by checking if they are a member of
-# the "user_enabled_emulation_dn" group. (boolean value)
+# the \"user_enabled_emulation_dn\" group. (boolean value)
 #user_enabled_emulation=false
 
 # DN of the group entry to hold enabled users when using
@@ -1010,7 +1010,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 
 # If True, Keystone uses an alternative method to determine if
 # a project is enabled or not by checking if they are a member
-# of the "tenant_enabled_emulation_dn" group. (boolean value)
+# of the \"tenant_enabled_emulation_dn\" group. (boolean value)
 #tenant_enabled_emulation=false
 
 # DN of the group entry to hold enabled projects when using
@@ -1135,7 +1135,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 # Options defined in keystone
 #
 
-# Memcache servers in the format of "host:port" (list value)
+# Memcache servers in the format of \"host:port\" (list value)
 #servers=localhost:11211
 
 # Number of compare-and-set attempts to make when using
@@ -1323,7 +1323,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 
 # Controls the token construction, validation, and revocation
 # operations. Core providers are
-# "keystone.token.providers.[pki|uuid].Provider". (string
+# \"keystone.token.providers.[pki|uuid].Provider\". (string
 # value)
 #provider=<None>
 
