@@ -272,7 +272,7 @@ admin_token=$token
 #fake_rabbit=false
 
 # ZeroMQ bind address. Should be a wildcard (*), an ethernet
-# interface, or IP. The "host" option should point or resolve
+# interface, or IP. The /"host/" option should point or resolve
 # to this address. (string value)
 #rpc_zmq_bind_address=*
 
@@ -885,7 +885,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 
 # The LDAP dereferencing option for queries. This can be
 # either \"never\", \"searching\", \"always\", \"finding\" or
-# \"default\". The "default" option falls back to using default
+# \"default\". The \"default\" option falls back to using default
 # dereferencing configured by your ldap.conf. (string value)
 #alias_dereferencing=default
 
@@ -929,7 +929,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 # Default value to enable users. This should match an
 # appropriate int value if the LDAP server uses non-boolean
 # (bitmask) values to indicate if a user is enabled or
-# disabled. If this is not set to "True"the typical value is
+# disabled. If this is not set to /"True/"the typical value is
 # \"512\". This is typically used when \"user_enabled_attribute =
 # userAccountControl\". (string value)
 #user_enabled_default=True
