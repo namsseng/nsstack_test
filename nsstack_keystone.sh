@@ -929,7 +929,7 @@ connection = mysql://keystone:$password@$managementip/keystone
 # Default value to enable users. This should match an
 # appropriate int value if the LDAP server uses non-boolean
 # (bitmask) values to indicate if a user is enabled or
-# disabled. If this is not set to /"True/"the typical value is
+# disabled. If this is not set to \"True\"the typical value is
 # \"512\". This is typically used when \"user_enabled_attribute =
 # userAccountControl\". (string value)
 #user_enabled_default=True
