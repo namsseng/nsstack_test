@@ -234,7 +234,7 @@ admin_token=$token
 #rabbit_port=5672
 
 # RabbitMQ HA cluster host:port pairs. (list value)
-#rabbit_hosts=$rabbit_host:$rabbit_port
+#rabbit_hosts=\$rabbit_host:\$rabbit_port
 
 # Connect over SSL for RabbitMQ. (boolean value)
 #rabbit_use_ssl=false
@@ -272,7 +272,7 @@ admin_token=$token
 #fake_rabbit=false
 
 # ZeroMQ bind address. Should be a wildcard (*), an ethernet
-# interface, or IP. The /"host/" option should point or resolve
+# interface, or IP. The \"host\" option should point or resolve
 # to this address. (string value)
 #rpc_zmq_bind_address=*
 
@@ -1346,8 +1346,8 @@ connection = mysql://keystone:$password@$managementip/keystone
 #cache_time=<None>
 
 # Revoke token by token identifier.  Setting revoke_by_id to
-# True enables various forms of enumerating tokens, e.g. `list
-# tokens for user`.  These enumerations are processed to
+# True enables various forms of enumerating tokens, e.g. list
+# tokens for user.  These enumerations are processed to
 # determine the list of tokens to revoke.   Only disable if
 # you are switching to using the Revoke extension with a
 # backend other than KVS, which stores events in memory.
@@ -1434,27 +1434,27 @@ keystone user-role-add --user=demo --role=_member_ --tenant=demo
 
 # keystone 
 keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl=http://$mangementip:5000/v2.0 --internalurl=http://$mangementip:5000/v2.0 --adminurl=http://$mangementip:35357/v2.0
+keystone endpoint-create --service-id=\$(keystone service-list | awk '/ identity / {print \$2}') --publicurl=http://$mangementip:5000/v2.0 --internalurl=http://$mangementip:5000/v2.0 --adminurl=http://$mangementip:35357/v2.0
 
 
 # glance
 keystone user-create --name=glance --pass=$password --email=$email
 keystone user-role-add --user=glance --tenant=service --role=admin
 keystone service-create --name=glance --type=image --description="OpenStack Image Service"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ image / {print $2}') --publicurl=http://$mangementip:9292 --internalurl=http://$mangementip:9292 --adminurl=http://$mangementip:9292
+keystone endpoint-create --service-id=\$(keystone service-list | awk '/ image / {print \$2}') --publicurl=http://$mangementip:9292 --internalurl=http://$mangementip:9292 --adminurl=http://$mangementip:9292
 
 
 # nova
 keystone user-create --name=nova --pass=$password --email=$email
 keystone user-role-add --tenant=service --user=nova --role=admin
 keystone service-create --name=nova --type=compute --description="OpenStack Compute"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl=http://$mangementip:8774/v2/%\(tenant_id\)s --internalurl=http://$mangementip:8774/v2/%\(tenant_id\)s --adminurl=http://$mangementip:8774/v2/%\(tenant_id\)s
+keystone endpoint-create --service-id=\$(keystone service-list | awk '/ compute / {print \$2}') --publicurl=http://$mangementip:8774/v2/%\(tenant_id\)s --internalurl=http://$mangementip:8774/v2/%\(tenant_id\)s --adminurl=http://$mangementip:8774/v2/%\(tenant_id\)s
 
 # neutron
 keystone user-create --name=neutron --pass=$password --email=$email
 keystone user-role-add --tenant=service --user=neutron --role=admin
 keystone service-create --name neutron --type network --description "OpenStack Networking"
-keystone endpoint-create --service-id $(keystone service-list | awk '/ network / {print $2}') --publicurl http://$mangementip:9696 --adminurl http://$mangementip:9696 --internalurl http://$mangementip:9696
+keystone endpoint-create --service-id \$(keystone service-list | awk '/ network / {print \$2}') --publicurl http://$mangementip:9696 --adminurl http://$mangementip:9696 --internalurl http://$mangementip:9696
 
 # cinder
 #keystone user-create --name=cinder --pass="$SERVICE_PASSWORD" --email=$email
