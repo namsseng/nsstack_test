@@ -819,17 +819,14 @@ metadata_proxy_shared_secret = kkkooorrreeeaaa
 
 service openvswitch-switch restart
 
-ovs-vsctl add-br br-ex
-ovs-vsctl add-port br-ex $rignic
 
+echo "
+net.ipv4.ip_forward=1
+net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.default.rp_filter=0
+" >> /etc/sysctl.conf
+sysctl -p
 
-
-
-
-echo 1 > /proc/sys/net/ipv4/ip_forward 
-sysctl net.ipv4.ip_forward=1 
-sysctl net.ipv4.conf.all.rp_filter=0
-sysctl net.ipv4.conf.default.rp_filter=0
 
 service nova-compute restart
 service nova-api restart
@@ -854,6 +851,8 @@ neutron router-create demo-router
 neutron router-interface-add demo-router demo-subnet
 neutron router-gateway-set demo-router ext-net
 
+ovs-vsctl add-br br-ex
+ovs-vsctl add-port br-ex $rignic
 
 echo "
 # This file describes the network interfaces available on your system
