@@ -5,7 +5,7 @@ if [ "$(id -u)" != "0" ]; then
    echo "You need to be 'root' dude." 1>&2
    exit 1
 fi
-./nsstack_setuprc
+. ./nsstack_setuprc
 password=$OS_SERVICE_PASSWORD    
 managementip=$OS_SERVICE_IP
 rignic=$OS_SERVICE_NIC
@@ -15,10 +15,12 @@ ext_gateway=$OS_EXTERNAL_GATEWAY
 ext_area=$OS_EXTERNAL_AREA
 ext_dns=$OS_EXTERNAL_DNS
 int_gateway=$OS_INTERNAL_GATEWAY
-int_area=OS_INTERNAL_AREA
+int_area=$OS_INTERNAL_AREA
 
-apt-get install neutron-server neutron-common neutron-plugin-ml2 neutron-plugin-openvswitch-agent openvswitch-datapath-dkms neutron-l3-agent neutron-dhcp-agent
+apt-get install -y neutron-server neutron-common neutron-plugin-ml2 neutron-plugin-openvswitch-agent openvswitch-datapath-dkms neutron-l3-agent neutron-dhcp-agent
+source admin_oprenrc.sh
 
+tenant_id= $(keyston tenant-get service | awk '/ id / {print $4}'
 echo "
 [DEFAULT]
 # Print more verbose output (set logging level to INFO instead of default WARNING level).
@@ -337,7 +339,7 @@ nova_url = http://$managementip:8774/v2
 nova_admin_username = nova
 
 # The uuid of the admin nova tenant
-nova_admin_tenant_id = a7d42fa61e81462d8b8409b47cd8e039
+nova_admin_tenant_id = $tenant_id
 
 # Password for connection to nova in admin context.
 nova_admin_password = $password
@@ -816,7 +818,7 @@ metadata_proxy_shared_secret = kkkooorrreeeaaa
 " > /etc/neutron/metadata_agent.ini
 
 service openvswitch-switch restart
-ovs-vsctl add-br br-int
+
 ovs-vsctl add-br br-ex
 ovs-vsctl add-port br-ex $rignic
 
@@ -840,11 +842,11 @@ service neutron-dhcp-agent restart
 service neutron-metadata-agent restart
 
 
-source admin-openrc.sh
+source admin_openrc.sh
 
 neutron subnet-create ext-net --name ext-subnet --allocation-pool start=$ext_start,end=$ext_end --disable-dhcp --gateway $ext_gateway $ext_area
 
-source demo-openrc.sh
+source demo_openrc.sh
 
 neutron subnet-create demo-net --name demo-subnet --gateway $int_gateway $int_area
 
@@ -865,7 +867,7 @@ auto br-ex
 iface br-ex inet static
         address         $managementip
         netmask         255.255.255.0
-        gateway         $ext_gatway
+        gateway         $ext_gateway
         up ifconfig \$IFACE promisc
         dns-nameservers $ext_dns
 

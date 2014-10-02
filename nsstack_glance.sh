@@ -53,6 +53,7 @@ sleep 3
 service glance-api restart; service glance-registry restart
 sleep 3
 
+source admin_openrc.sh
 # add cirros image
 glance image-create --name="Cirros 0.3.0"  --is-public=true --container-format=bare --disk-format=qcow2 --location=http://download.cirros-cloud.net/0.3.2/cirros-0.3.2-x86_64-disk.img
 

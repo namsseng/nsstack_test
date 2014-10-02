@@ -1426,7 +1426,7 @@ keystone role-create --name=admin
 
 # Tenants
 keystone tenant-create --name=admin --description="Admin Tenant"
-keystone tenant-create --name=service --description="Service Tenant"
+keystone tenant-create --name=service --description="Service Ten
 keystone tenant-create --name=demo --description="Demo Tenant"
 
 # Add Roles to Users in Tenants
