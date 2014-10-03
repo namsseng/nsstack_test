@@ -12,6 +12,10 @@ apt-get install -y apache2 memcached libapache2-mod-wsgi openstack-dashboard
 
 # remove the ubuntu theme - seriously this is fucking stupid it's still broken
 apt-get remove -y --purge openstack-dashboard-ubuntu-theme
+sed -e "
+/^OPENSTACK_HOST  =.*$/s/^.*$/OPENSTACK_HOST = \"$managementip\"/
+
+" -i /etc/openstack-dashboard/local_settings.py
 
 # restart apache
 service apache2 restart; service memcached restart
