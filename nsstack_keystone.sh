@@ -1405,7 +1405,12 @@ export OS_PASSWORD=$password
 export OS_AUTH_URL=http://$managementip:35357/v2.0
 EOF
 
-# source admin_openrc.sh
+
+export OS_SERVICE_TOKEN="$token"
+export OS_SERVICE_ENDPOINT=http://"$managementip":35357/v2.0
+
+
+
 
 # The following portions of this script were inspired by works by Hastexo and the OpenStack wiki scripts.
 # Where possible, I've clarified or cleaned up logic flow to 'group' linear commands to each other.
@@ -1437,6 +1442,7 @@ keystone user-role-add --user=demo --role=_member_ --tenant=demo
 keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
 keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl=http://"$managementip":5000/v2.0 --internalurl=http://"$managementip":5000/v2.0 --adminurl=http://"$managementip":35357/v2.0
 
+source admin_openrc.sh
 
 # glance
 keystone user-create --name=glance --pass="$password" --email="$email"
@@ -1456,18 +1462,4 @@ keystone user-create --name=neutron --pass="$password" --email="$email"
 keystone user-role-add --tenant=service --user=neutron --role=admin
 keystone service-create --name neutron --type network --description "OpenStack Networking"
 keystone endpoint-create --service-id=$(keystone service-list | awk '/ network / {print $2}') --publicurl=http://"$managementip":9696 --adminurl=http://"$managementip":9696 --internalurl=http://"$managementip":9696
-
-# cinder
-#keystone user-create --name=cinder --pass="$SERVICE_PASSWORD" --email=$email
-#keystone user-role-add --tenant=service --user=cinder --role=admin
-#CINDER=$(get_id keystone service-create --name=cinder --type=volume --description=Volume )
-#keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$CINDER --publicurl='http://'"$managementip"':8776/v1/$(tenant_id)s' --adminurl='http://'"$managementip"':8776/v1/$(tenant_id)s' --internalurl='http://'"$managementip"':8776/v1/$(tenant_id)s'
-#CINDER2=$(get_id keystone service-create --name=cinder --type=volumev2 --description=Volume2 )
-#keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$CINDER2 --publicurl='http://'"$managementip"':8776/v2/$(tenant_id)s' --adminurl='http://'"$managementip"':8776/v2/$(tenant_id)s' --internalurl='http://'"$managementip"':8776/v2/$(tenant_id)s'
-
-
-
-# ec2 compatability
-#EC2=$(get_id keystone service-create --name=ec2 --type=ec2 --description=EC2 )
-#keystone endpoint-create --region=$KEYSTONE_REGION --service-id=$EC2 --publicurl='http://'"$managementip"':8773/services/Cloud' --adminurl='http://'"$managementip"':8773/services/Admin' --internalurl='http://'"$managementip"':8773/services/Cloud'
 
