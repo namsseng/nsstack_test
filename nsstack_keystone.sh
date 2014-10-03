@@ -6,7 +6,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-
+set -x
 
 . ./nsstack_setuprc
 
@@ -1424,7 +1424,7 @@ export OS_SERVICE_ENDPOINT=http://$managementip:35357/v2.0
 echo "1 "
 # Users
 keystone user-create --name=admin --pass=$password --email=$email
-keystone user-create --name=demo --pass="$password --email=$email
+keystone user-create --name=demo --pass=$password --email=$email
 echo "2 "
 # Roles
 keystone role-create --name=admin
