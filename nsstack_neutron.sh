@@ -19,9 +19,9 @@ int_gateway=$OS_INTERNAL_GATEWAY
 int_area=$OS_INTERNAL_AREA
 
 apt-get install -y neutron-server neutron-common neutron-plugin-ml2 neutron-plugin-openvswitch-agent openvswitch-datapath-dkms neutron-l3-agent neutron-dhcp-agent
-source admin_oprenrc.sh
+source admin_openrc.sh
 
-tenant_id= $(keyston tenant-get service | awk '/ id / {print $4}'
+tenant_id= echo "$(keyston tenant-get service | awk '/ id / {print $4}')"
 echo "
 [DEFAULT]
 # Print more verbose output (set logging level to INFO instead of default WARNING level).

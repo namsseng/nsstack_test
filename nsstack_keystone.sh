@@ -1433,6 +1433,7 @@ keystone tenant-create --name=demo --description="Demo Tenant"
 echo "4 "
 # Add Roles to Users in Tenants
 keystone user-role-add --user=admin --role=admin --tenant=admin
+keystone user-role-add --user=admin --role=_member_ --tenant=admin
 keystone user-role-add --user=demo --role=_member_ --tenant=demo
 echo "5 "
 # keystone 
