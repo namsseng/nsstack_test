@@ -1406,9 +1406,6 @@ export OS_AUTH_URL=http://$managementip:35357/v2.0
 EOF
 
 
-export OS_SERVICE_TOKEN=$token
-export OS_SERVICE_ENDPOINT=http://$managementip:35357/v2.0
-
 . ./nsstack_setuprc
 
 
@@ -1442,7 +1439,7 @@ echo "5 "
 keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
 keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl='http://'"$managementip"':5000/v2.0' --internalurl='http://'"$managementip"':5000/v2.0' --adminurl='http://'"$managementip"':35357/v2.0'
 
-source admin_openrc.sh
+
 echo "6 "
 # glance
 keystone user-create --name=glance --pass="$password" --email="$email"
@@ -1455,7 +1452,7 @@ echo "7 "
 keystone user-create --name=nova --pass="$password" --email="$email"
 keystone user-role-add --tenant=service --user=nova --role=admin
 keystone service-create --name=nova --type=compute --description="OpenStack Compute"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl='http://'"$managementip"':8774/v2/%\(tenant_id\)s' --internalurl='http://'"$managementip"':8774/v2/%\(tenant_id\)s' --adminurl='http://'"$managementip"':8774/v2/%\(tenant_id\)s'
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl='http://'"$managementip"':8774/v2/$(tenant_id)s' --internalurl='http://'"$managementip"':8774/v2/$(tenant_id)s' --adminurl='http://'"$managementip"':8774/v2/$(tenant_id)s'
 echo "8 "
 # neutron
 keystone user-create --name=neutron --pass="$password" --email="$email"
