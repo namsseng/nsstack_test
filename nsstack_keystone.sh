@@ -14,7 +14,7 @@ fi
 apt-get install keystone -y
 
 # some vars from the SG setup file getting locally reassigned 
-password=$OS_SERVICE_PASSWORD
+password=$OS_PASSWORD
 email=$OS_SERVICE_EMAIL
 token=$OS_SERVICE_TOKEN
 region=$OS_SERVICE_REGION
@@ -1406,8 +1406,8 @@ export OS_AUTH_URL=http://$managementip:35357/v2.0
 EOF
 
 
-export OS_SERVICE_TOKEN="$token"
-export OS_SERVICE_ENDPOINT=http://"$managementip":35357/v2.0
+export OS_SERVICE_TOKEN=$token
+export OS_SERVICE_ENDPOINT=http://$managementip:35357/v2.0
 
 
 
@@ -1423,8 +1423,8 @@ export OS_SERVICE_ENDPOINT=http://"$managementip":35357/v2.0
 # guess. consider me disgruntled. Kord 
 echo "1 "
 # Users
-keystone user-create --name=admin --pass="$password" --email="$email"
-keystone user-create --name=demo --pass="$password" --email="$email"
+keystone user-create --name=admin --pass=$password --email=$email
+keystone user-create --name=demo --pass="$password --email=$email
 echo "2 "
 # Roles
 keystone role-create --name=admin
@@ -1440,7 +1440,7 @@ keystone user-role-add --user=demo --role=_member_ --tenant=demo
 echo "5 "
 # keystone 
 keystone service-create --name=keystone --type=identity --description="OpenStack Identity"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl=http://"$managementip":5000/v2.0 --internalurl=http://"$managementip":5000/v2.0 --adminurl=http://"$managementip":35357/v2.0
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ identity / {print $2}') --publicurl='http://'"$managementip"':5000/v2.0' --internalurl='http://'"$managementip"':5000/v2.0' --adminurl='http://'"$managementip"':35357/v2.0'
 
 source admin_openrc.sh
 echo "6 "
@@ -1448,17 +1448,17 @@ echo "6 "
 keystone user-create --name=glance --pass="$password" --email="$email"
 keystone user-role-add --user=glance --tenant=service --role=admin
 keystone service-create --name=glance --type=image --description="OpenStack Image Service"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ image / {print $2}') --publicurl=http://"$managementip":9292 --internalurl=http://"$managementip":9292 --adminurl=http://"$managementip":9292
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ image / {print $2}') --publicurl='http://'"$managementip"':9292' --internalurl='http://'"$managementip"':9292' --adminurl='http://'"$managementip"':9292'
 
 echo "7 "
 # nova
 keystone user-create --name=nova --pass="$password" --email="$email"
 keystone user-role-add --tenant=service --user=nova --role=admin
 keystone service-create --name=nova --type=compute --description="OpenStack Compute"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl=http://"$managementip":8774/v2/%\(tenant_id\)s --internalurl=http://"$managementip":8774/v2/%\(tenant_id\)s --adminurl=http://"$managementip":8774/v2/%\(tenant_id\)s
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ compute / {print $2}') --publicurl='http://'"$managementip"':8774/v2/%\(tenant_id\)s' --internalurl='http://'"$managementip"':8774/v2/%\(tenant_id\)s' --adminurl='http://'"$managementip"':8774/v2/%\(tenant_id\)s'
 echo "8 "
 # neutron
 keystone user-create --name=neutron --pass="$password" --email="$email"
 keystone user-role-add --tenant=service --user=neutron --role=admin
 keystone service-create --name neutron --type network --description "OpenStack Networking"
-keystone endpoint-create --service-id=$(keystone service-list | awk '/ network / {print $2}') --publicurl=http://"$managementip":9696 --adminurl=http://"$managementip":9696 --internalurl=http://"$managementip":9696
+keystone endpoint-create --service-id=$(keystone service-list | awk '/ network / {print $2}') --publicurl='http://'"$managementip"':9696' --adminurl='http://'"$managementip"':9696' --internalurl='http://'"$managementip"':9696'

@@ -7,7 +7,7 @@ if [ "$(id -u)" != "0" ]; then
 fi
 . ./nsstack_setuprc
 
-password=$OS_SERVICE_PASSWORD    
+password=$OS_PASSWORD    
 managementip=$OS_SERVICE_IP
 rignic=$OS_SERVICE_NIC
 

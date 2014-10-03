@@ -6,7 +6,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 . ./nsstack_setuprc
-password=$OS_SERVICE_PASSWORD
+password=$OS_PASSWORD
 managementip=$OS_SERVICE_IP
 
 apt-get install -y glance python-glanceclient
