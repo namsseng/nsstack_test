@@ -9,6 +9,7 @@ fi
 password=$OS_SERVICE_PASSWORD    
 managementip=$OS_SERVICE_IP
 rignic=$OS_SERVICE_NIC
+region=$OS_SERVICE_REGION
 ext_start=$OS_EXTERNAL_START
 ext_end=$OS_EXTERNAL_END
 ext_gateway=$OS_EXTERNAL_GATEWAY
@@ -772,7 +773,7 @@ echo "
 
 # The Neutron user information for accessing the Neutron API.
 auth_url = http://$managementip:5000/v2.0
-auth_region = regionOne
+auth_region = $region
 # Turn off verification of the certificate for ssl
 # auth_insecure = False
 # Certificate Authority public key (CA cert) file for ssl
