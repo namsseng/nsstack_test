@@ -1,6 +1,5 @@
 export OS_TENANT_NAME=admin
 export OS_USERNAME=admin
-export OS_PASSWORD=1
 export OS_SERVICE_IP=192.168.110.2
 export OS_SERVICE_ENDPOINT=http://$OS_SERVICE_IP:35357/v2.0
 export OS_SERVICE_NIC=eth0
