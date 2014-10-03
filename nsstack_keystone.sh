@@ -1409,7 +1409,7 @@ EOF
 export OS_SERVICE_TOKEN=$token
 export OS_SERVICE_ENDPOINT=http://$managementip:35357/v2.0
 
-
+. ./nsstack_setuprc
 
 
 # The following portions of this script were inspired by works by Hastexo and the OpenStack wiki scripts.
@@ -1431,7 +1431,7 @@ keystone role-create --name=admin
 echo "3 "
 # Tenants
 keystone tenant-create --name=admin --description="Admin Tenant"
-keystone tenant-create --name=service --description="Service Ten
+keystone tenant-create --name=service --description="Service Tenent"
 keystone tenant-create --name=demo --description="Demo Tenant"
 echo "4 "
 # Add Roles to Users in Tenants
