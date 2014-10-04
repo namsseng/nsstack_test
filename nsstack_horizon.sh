@@ -19,3 +19,10 @@ sed -e "
 
 # restart apache
 service apache2 restart; service memcached restart
+
+source demo-openrc.sh
+
+ssh-keygen
+nova keypair-add --pub-key ~/.ssh/id_rsa.pub demo-key
+nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
+nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0

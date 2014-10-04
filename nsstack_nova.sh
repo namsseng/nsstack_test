@@ -62,7 +62,7 @@ neutron_url = http://$managementip:9696
 neutron_auth_strategy = keystone
 neutron_admin_tenant_name = service
 neutron_admin_username = neutron
-neutron_admin_password = 1
+neutron_admin_password = $password
 neutron_admin_auth_url = http://$managementip:35357/v2.0
 linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
@@ -95,6 +95,8 @@ admin_user = nova
 admin_password = $password
 " > /etc/nova/nova.conf
 
+su -s /bin/sh -c "nova-manage db sync" nova
+
 rm /var/lib/nova/nova.sqlite
 service nova-api restart
 service nova-cert restart
@@ -103,4 +105,6 @@ service nova-scheduler restart
 service nova-conductor restart
 service nova-novncproxy restart
 service nova-compute restart
+
+
 
