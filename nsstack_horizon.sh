@@ -20,7 +20,7 @@ sed -e "
 # restart apache
 service apache2 restart; service memcached restart
 
-source demo-openrc.sh
+source demo_openrc.sh
 
 ssh-keygen
 nova keypair-add --pub-key ~/.ssh/id_rsa.pub demo-key

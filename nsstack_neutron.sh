@@ -759,6 +759,8 @@ service neutron-l3-agent restart
 service neutron-dhcp-agent restart
 service neutron-metadata-agent restart
 
+sleep 4
+
 
 source admin_openrc.sh
 neutron net-create ext-net --shared --router:external=True
